@@ -1,0 +1,130 @@
+class Solution {
+    public int minCut(String s) {
+        
+        
+        int n = s.length();
+        if(n==1) return 0;
+        boolean dp[][] = new boolean[n][n];
+        
+        for(int i=0;i<2;i++){
+            int j =0;
+            int k = i;
+            while(k<n){
+                if(s.charAt(j)==s.charAt(k)) dp[j][k] = true;
+                else dp[j][k] = false;
+                j++;
+                k++;
+            }
+        }
+        
+        
+        for(int i=2;i<n;i++){
+            int j =0;
+            int k = i;
+            while(k<n){
+                if(s.charAt(j)!=s.charAt(k)){
+                    dp[j][k] = false;
+                }
+                else{
+                    dp[j][k] = dp[j+1][k-1];
+                }
+                
+                k++;
+                j++;
+            }
+        }
+        
+        
+        
+        // for(boolean ele[]:dp){
+        //     System.out.println(Arrays.toString(ele));
+        // }
+        
+        
+    
+        
+        // Method1 TC---------->  O(n*n*n)-------------------------------------------------> Will give TLE in 1 case
+        
+//         int dp1[][] = new int[n][n];
+        
+//         for(int i=0;i<2;i++){
+//             int j =0;
+//             int k = i;
+//             while(k<n){
+//                 if(s.charAt(j)==s.charAt(k)) dp1[j][k] = 0;
+//                 else dp1[j][k] = 1;
+//                 j++;
+//                 k++;
+//             }
+//         }
+        
+        
+//         for(int i=2;i<n;i++){
+//             int j =0;
+//             int k = i;
+//             while(k<n){
+//                 if(dp[j][k]==true) {
+//                     dp1[j][k] =0;
+
+//                 }
+//                 else{
+//                     int ll = j;
+//                     int rr = j+1;
+//                     int min = Integer.MAX_VALUE;
+//                     while(ll<k){
+//                         min = Math.min(dp1[j][ll]+dp1[rr][k],min);
+//                         ll++;
+//                         rr++;
+//                     }
+//                     dp1[j][k] = min+1;
+//                 }
+
+//                 j++;
+//                 k++;
+//             }
+//         }
+// //         for(int ele[]:dp1){
+// //             System.out.println(Arrays.toString(ele));
+// //         }
+        
+//         return dp1[0][n-1];
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Method2--------------------------------------------->TC O(n*n)
+        int dp1[] = new int[n];
+        dp1[0] = 0;
+        if(s.charAt(0)==s.charAt(1)){
+            dp1[1] = 0;
+        }
+        else dp1[1] = 1;
+        
+        
+        for(int i =2;i<n;i++){
+            int j = i;
+            if(dp[0][j]) dp1[i] = 0;
+            else{
+                int min = Integer.MAX_VALUE;
+                while(j>0){
+                    if(dp[j][i]){
+                        min = Math.min(min,dp1[j-1]);
+                    }
+                    j--;
+                }
+                dp1[i] = min+1;
+            }
+        }
+        
+        return dp1[n-1];
+        
+        
+    }
+}
